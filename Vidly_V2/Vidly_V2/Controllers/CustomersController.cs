@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,16 +16,28 @@ namespace Vidly_V2.Controllers
         //    return View();
         //}
 
+        private ApplicationDbContext _context;
+
+        public CustomersController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
         public ViewResult Index()
         {
-            var customers = GetCustomers();
-
+            //var customers = GetCustomers();
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
             return View(customers);
         }
 
         public ActionResult Details(int Id)
         {
-            var customer = GetCustomers().SingleOrDefault(c => c.Id == Id);
+            //var customer = GetCustomers().SingleOrDefault(c => c.Id == Id);
+            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == Id);
 
             if (customer == null)
             {
@@ -33,13 +46,13 @@ namespace Vidly_V2.Controllers
             return View(customer);
         }
 
-        public IEnumerable<Customer> GetCustomers()
-        {
-            return new List<Customer>
-            {
-                new Customer { Id=1, Name="Ajay"},
-                new Customer { Id=2, Name="Rao"}
-            };
-        }
+        //public IEnumerable<Customer> GetCustomers()
+        //{
+        //    return new List<Customer>
+        //    {
+        //        new Customer { Id=1, Name="Ajay"},
+        //        new Customer { Id=2, Name="Rao"}
+        //    };
+        //}
     }
 }

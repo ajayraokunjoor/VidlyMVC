@@ -6,5 +6,11 @@
 }
 
 <h2>@Model.Id - @Model.Name</h2>
+<ul>
+    <li>Genre : @Model.Genre.Name</li>
+    <li>Release Date : @Model.ReleaseDate.ToLongDateString()</li>
+    <li>Date Added : @Model.DateAdded.ToLongTimeString()</li>
+    <li>Number In Stock : @Model.NumberInStock</li>
+</ul>
 
 
